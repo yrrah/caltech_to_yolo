@@ -66,9 +66,11 @@ load(annotation_file, 'box_coord', 'obj_contour');
    
 %% convert box to YOLO
 ima = imread(new_img_file); 
-[ima_width, ima_height, ~] = size(ima);
+[ima_height, ima_width, ~] = size(ima);
 label_file = fullfile('labels',label);
-write_txt_annotation(label_file, class, box_coord(3)/ima_width, box_coord(1)/ima_height, (box_coord(4)-box_coord(3))/ima_width, (box_coord(2)-box_coord(1))/ima_height)
+box_width = box_coord(4)-box_coord(3)
+box_height = box_coord(2)-box_coord(1)
+write_txt_annotation(label_file, class, (box_width/2+box_coord(3))/ima_width, (box_height/2+box_coord(1))/ima_height, box_width/ima_width, box_height/ima_height)
 
 function write_txt_annotation(name, class, x, y, w, h)
 fileID = fopen(name,'w');
